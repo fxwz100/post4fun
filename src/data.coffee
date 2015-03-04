@@ -24,7 +24,7 @@ class MongoRecordAccesser
   Add a record.
   ###
   addRecord: ({content, ttl}) ->
-    if content.indexOf('<script') < 0 and content.indexOf('<iframe') <0
+    if content and content.length and content.indexOf('<script') < 0 and content.indexOf('<iframe') <0
       @docClient.then (db) ->
         collection = db.collection 'records'
         collection.insertAsync
