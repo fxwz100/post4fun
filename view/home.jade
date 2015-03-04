@@ -2,6 +2,8 @@ extends ./bootstrap
 
 block head
   title 限时消息
+  script(src="http://mindmup.github.io/bootstrap-wysiwyg/external/jquery.hotkeys.js")
+  script(src="http://www.bootcss.com/p/bootstrap-wysiwyg/bootstrap-wysiwyg.js")
   script
     :coffee
       $ ->
@@ -18,12 +20,19 @@ block head
         $form = $ '#rec-form'
         $form.submit (event) ->
           event.preventDefault()
+          $('#content').val($('#content-editor').html());
           $.post('rec/new', $form.serialize())
           .success (data) ->
             location.reload()
           .error (err) ->
             alert '有错误！'
             location.reload()
+
+        $('#content-editor').wysiwyg();
+  style(type="text/css").
+    .magic-overlay { position: absolute; top: 0; left: 0; opacity: 0; height: 100%; }
+    .editor-container { position: relative; overflow: visible; height: 34px; }
+    #content-editor { position: absolute; width: 100%; height: auto !important; border-radius: 0; }
 
 block body
   .container-fluid
@@ -32,7 +41,13 @@ block body
       .panel-body
         form#rec-form.form(method="POST")
           .input-group
-            input.form-control(type="text", name="content")
+            span.input-group-btn(data-role="editor-toolbar", data-target="#content-editor")
+              button.btn.btn-default(type="button")
+                span#picture-btn.glyphicon.glyphicon-picture
+                input.magic-overlay(type="file", data-role="magic-overlay", data-target="#picture-btn", data-edit="insertImage")
+            div.editor-container
+              #content-editor.form-control(type="text", name="content")
+              input#content(type="hidden", name="content")
             .input-group-addon
               select(name="ttl")
                 option(value="1") 1分钟
