@@ -1,0 +1,23 @@
+{
+  "name": "limited-reading",
+  "version": "0.0.1",
+  "description": "A simple web site for reading in limited time.",
+  "main": "bin/bootstrap.js",
+  "repository": "https://coding.net/yfwz100/coffee-blog.git",
+  "author": "yfwz100 <yfwz100@yeah.net>",
+  "scripts": {
+    "start": "node bin/bootstrap"
+  },
+  "dependencies": {
+    "bluebird": "*",
+    "body-parser": "*",
+    "coffee-script": "*",
+    "cookie-parser": "*",
+    "express": "*",
+    "express-session": "*",
+    "jade": "*",
+    "marked": "*",
+    "morgan": "*",
+    "mongodb": "*"
+  }
+}
