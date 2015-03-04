@@ -4,16 +4,18 @@ block head
   title 限时消息
   script(src="http://mindmup.github.io/bootstrap-wysiwyg/external/jquery.hotkeys.js")
   script(src="http://www.bootcss.com/p/bootstrap-wysiwyg/bootstrap-wysiwyg.js")
+  script(src="http://cdn.bootcss.com/moment.js/2.9.0/moment-with-locales.min.js")
   script
     :coffee
       $ ->
+        moment.locale 'zh-CN'
         $recs = $ '#records'
         loadRecords = ->
           $.get('records.json').success (data) ->
             if data.length
               $recs.empty()
               for it in data
-                $recs.append "<li class=\"list-group-item\">#{it.content}</li>"
+                $recs.append "<li class=\"list-group-item\"><b>匿名者</b>在#{moment(it.time).fromNow()}说：<br/> #{it.content}</li>"
           setTimeout loadRecords, 10000
         loadRecords()
 

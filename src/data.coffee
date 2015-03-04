@@ -30,6 +30,7 @@ class MongoRecordAccesser
         collection.insertAsync
           content: content
           ttl: ttl
+          time: new Date()
         ,
           w: 1
     else
