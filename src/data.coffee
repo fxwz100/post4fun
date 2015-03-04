@@ -24,12 +24,15 @@ class MongoRecordAccesser
   Add a record.
   ###
   addRecord: ({content, ttl}) ->
-    @docClient.then (db) ->
-      collection = db.collection 'records'
-      collection.insertAsync
-        content: content
-        ttl: ttl
-      ,
-        w: 1
+    if content.indexOf('<script') < 0 and content.indexOf('<iframe') <0
+      @docClient.then (db) ->
+        collection = db.collection 'records'
+        collection.insertAsync
+          content: content
+          ttl: ttl
+        ,
+          w: 1
+    else
+      bluebird.reject 'Potential malicious content!'
 
 module.exports = MongoRecordAccesser
