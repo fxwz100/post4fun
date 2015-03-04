@@ -1,0 +1,43 @@
+extends ./bootstrap
+
+block head
+  title 限时消息
+  script
+    :coffee
+      $ ->
+        $recs = $ '#records'
+        loadRecords = ->
+          $.get('records.json').success (data) ->
+            if data.length
+              $recs.empty()
+              for it in data
+                $recs.append "<li class=\"list-group-item\">#{it.content}</li>"
+          setTimeout loadRecords, 10000
+        loadRecords()
+
+        $form = $ '#rec-form'
+        $form.submit (event) ->
+          event.preventDefault()
+          $.post('rec/new', $form.serialize())
+          .success (data) ->
+            location.reload()
+          .error (err) ->
+            alert '有错误！'
+            location.reload()
+
+block body
+  .container-fluid
+    .panel.panel-primary
+      .panel-heading 发表限时消息
+      .panel-body
+        form#rec-form.form(method="POST")
+          .input-group
+            input.form-control(type="text", name="content")
+            .input-group-addon
+              select(name="ttl")
+                option(value="1") 1分钟
+                option(value="2") 2分钟
+                option(value="5") 5分钟
+            span.input-group-btn
+              button.btn.btn-default(type="submit") 发表
+      ul#records.list-group
