@@ -1,7 +1,7 @@
 extends ./bootstrap
 
 block head
-  title 限时消息
+  title 限时吐槽
   script(src="http://mindmup.github.io/bootstrap-wysiwyg/external/jquery.hotkeys.js")
   script(src="http://www.bootcss.com/p/bootstrap-wysiwyg/bootstrap-wysiwyg.js")
   script(src="http://cdn.bootcss.com/moment.js/2.9.0/moment-with-locales.min.js")
@@ -38,8 +38,11 @@ block head
 
 block body
   .container-fluid
-    .panel.panel-primary
-      .panel-heading 发表限时消息
+    .panel.panel-default
+      .panel-heading
+        span 发表限时吐槽
+        span.pull-right
+          a(href="/about") [关于]
       .panel-body
         form#rec-form.form(method="POST")
           .input-group
