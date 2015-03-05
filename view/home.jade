@@ -16,7 +16,7 @@ block head
               $recs.empty()
               for it in data
                 $recs.append "<li class=\"list-group-item\"><b>匿名者</b>在#{moment(it.time).fromNow()}说：<br/> #{it.content}</li>"
-          setTimeout loadRecords, 10000
+        setInterval loadRecords, 1000
         loadRecords()
 
         $form = $ '#rec-form'
@@ -25,16 +25,19 @@ block head
           $('#content').val($('#content-editor').html());
           $.post('rec/new', $form.serialize())
           .success (data) ->
-            location.reload()
+            loadRecords()
+            $('#content-editor').empty()
           .error (err) ->
             alert '有错误！'
             location.reload()
 
         $('#content-editor').wysiwyg();
   style(type="text/css").
-    .magic-overlay { position: absolute; top: 0; left: 0; opacity: 0; height: 100%; }
-    .editor-container { position: relative; overflow: visible; height: 34px; }
-    #content-editor { position: absolute; width: 100%; height: auto !important; border-radius: 0; }
+    #picture-btn { position: relative; }
+    .magic-overlay { position: absolute; top: 0; right: 0; z-index: 999; opacity: 0; width: 100px; height: 100%; }
+    #content-editor { min-height: 4em; height: auto !important; border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+    .editor-toolbar { padding: 0.2em; background-color: #efefef; border: 1px solid #ccc; border-top: 0; border-radius: 0 0 4px 4px; }
+    .pull-right * { display: inline-block; width: auto !important; }
 
 block body
   .container-fluid
@@ -45,19 +48,19 @@ block body
           a(href="/about") [关于]
       .panel-body
         form#rec-form.form(method="POST")
-          .input-group
-            span.input-group-btn(data-role="editor-toolbar", data-target="#content-editor")
-              button.btn.btn-default(type="button")
-                span#picture-btn.glyphicon.glyphicon-picture
-                input.magic-overlay(type="file", data-role="magic-overlay", data-target="#picture-btn", data-edit="insertImage")
-            div.editor-container
-              #content-editor.form-control(type="text", name="content")
-              input#content(type="hidden", name="content")
-            .input-group-addon
-              select(name="ttl")
-                option(value="1") 1分钟
-                option(value="2") 2分钟
-                option(value="5") 5分钟
-            span.input-group-btn
-              button.btn.btn-default(type="submit") 发表
+          #content-editor.form-control(type="text", name="content")
+          input#content(type="hidden", name="content")
+          .editor-toolbar.form-inline
+            // span.picture-btn(data-role="editor-toolbar", data-target="#content-editor")
+            span#picture-btn.btn.btn-default.btn-sm(data-role="editor-toolbar")
+              span.glyphicon.glyphicon-picture
+              input.magic-overlay(type="file", data-role="magic-overlay", data-target="#picture-btn", data-edit="insertImage")
+            .pull-right
+              select.form-control.input-sm(name="ttl")
+                option(value="5")  5分钟
+                option(value="10") 10分钟
+                option(value="15") 15分钟
+                option(value="20") 20分钟
+              | &nbsp;
+              button.btn.btn-primary.btn-sm(type="submit") 发表
       ul#records.list-group

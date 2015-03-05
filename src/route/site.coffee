@@ -20,7 +20,7 @@ exports = module.exports = ({router, data}) ->
   # Post a new record.
   router.post '/rec/new', (req, res) ->
     ttl = parseInt req.body.ttl
-    if ttl <= 5
+    if ttl <= 20
       data.addRecord
         content: req.body.content
         ttl: new Date(parseInt(ttl) * 60000 + (+new Date()))
