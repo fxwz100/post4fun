@@ -16,9 +16,18 @@ class MongoRecordAccesser
   fetchRecords: (start=0, length=10) ->
     @docClient.then (db) ->
       collection = db.collection 'records'
-      collection.find
+      query = collection.find
         ttl: $gte: new Date()
-      .skip(start).limit(length).toArrayAsync()
+      .sort
+        time: -1
+      bluebird.all [
+        query.countAsync()
+        query.skip(start).limit(length).toArrayAsync()
+      ]
+      .spread (count, recs) ->
+        start: start
+        count: count
+        records: recs
 
   ###
   Add a record.

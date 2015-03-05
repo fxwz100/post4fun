@@ -12,9 +12,9 @@ block head
         $recs = $ '#records'
         loadRecords = ->
           $.get('records.json').success (data) ->
-            if data.length
+            if data and data.records and data.records.length
               $recs.empty()
-              for it in data
+              for it in data.records
                 $recs.append "<li class=\"list-group-item\"><b>匿名者</b>在#{moment(it.time).fromNow()}说：<br/> #{it.content}</li>"
         setInterval loadRecords, 1000
         loadRecords()

@@ -8,8 +8,8 @@ exports = module.exports = ({router, data}) ->
   # Fetch records
   router.get '/records.json', (req, res) ->
     start = parseInt req.query.start || 0
-    data.fetchRecords(start).then (recs) ->
-      res.json recs
+    data.fetchRecords(start).then (result) ->
+      res.json result
     .catch (err) ->
       res.status(500).json err: err
 
