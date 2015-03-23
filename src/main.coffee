@@ -31,12 +31,6 @@ app.use bodyParser.json()
 app.use bodyParser.urlencoded extended: off
 app.use cookieParser()
 
-# Mount CSS directory as '/style'.
-app.use '/style', express.static basePath 'view', 'style'
-
-# Mount client scripts referenced as '/script'.
-app.use '/script', express.static path.join __dirname, 'client'
-
 # Main logic.
 app.use '/', require('./route/site')
   router: express.Router()
