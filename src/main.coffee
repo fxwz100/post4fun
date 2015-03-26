@@ -31,10 +31,18 @@ app.use bodyParser.json()
 app.use bodyParser.urlencoded extended: off
 app.use cookieParser()
 
+# The topic data.
+topicData = new RecordAccess(process.env.MONGO_URL)
+
 # Main logic.
 app.use '/', require('./route/site')
   router: express.Router()
-  data  : new RecordAccess(process.env.MONGO_URL)
+  data  : topicData
+
+# Topic logic.
+app.use '/:topic', require('./route/topic')
+  router: express.Router mergeParams: true
+  data  : topicData
 
 app.listen app.get('port'), ->
   console.log "Server is running at #{app.get('port')}."
